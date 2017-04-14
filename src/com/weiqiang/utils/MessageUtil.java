@@ -1,34 +1,16 @@
 package com.weiqiang.utils;
 
- 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
- 
-
-
-
-
-
-
-
 import javax.servlet.http.HttpServletRequest;
- 
-
-
-
-
-
-
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -36,8 +18,6 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 import com.weiqiang.vo.TextMeaasge;
 
- 
- 
 /**
  * 实现消息的格式转换(Map类型和XML的互转)
  */
