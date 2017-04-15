@@ -1,23 +1,14 @@
 package com.weiqiang.servelt;
 
-
- 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
- 
-
-
-
-
-import javax.servlet.ServletException;
+ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.dom4j.DocumentException;
-
 import com.weiqiang.utils.CheckUtil;
 import com.weiqiang.utils.MessageUtil;
 import com.weiqiang.vo.TextMeaasge;
@@ -28,12 +19,17 @@ import com.weiqiang.vo.TextMeaasge;
 public class WeixinServlet extends HttpServlet {
  
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * 接收微信服务器发送的4个参数并返回echostr
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
  
-        // ����΢�ŷ�������Get�����͵�4������
+        //接收微信服务器以Get请求发送的4个参数
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
