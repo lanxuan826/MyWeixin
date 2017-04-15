@@ -1,16 +1,34 @@
 package com.weiqiang.utils;
 
+ 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+ 
+
+
+
+
+
+
+
 import javax.servlet.http.HttpServletRequest;
+ 
+
+
+
+
+
+
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -18,23 +36,25 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 import com.weiqiang.vo.TextMeaasge;
 
+ 
+ 
 /**
- * ÊµÏÖÏûÏ¢µÄ¸ñÊ½×ª»»(MapÀàĞÍºÍXMLµÄ»¥×ª)
+ *å®ç°æ¶ˆæ¯çš„æ ¼å¼è½¬æ¢(Mapç±»å‹å’ŒXMLçš„äº’è½¬)
  */
 public class MessageUtil {
  
     /**
-     * ½«XML×ª»»³ÉMap¼¯ºÏ
+     * ï¿½ï¿½XML×ªï¿½ï¿½ï¿½ï¿½Mapï¿½ï¿½ï¿½ï¿½
      */
     public static Map<String, String>xmlToMap(HttpServletRequest request) throws IOException, DocumentException{
          
         Map<String, String> map = new HashMap<String, String>();
-        SAXReader reader = new SAXReader();            // Ê¹ÓÃdom4j½âÎöxml
-        InputStream ins = request.getInputStream(); // ´ÓrequestÖĞ»ñÈ¡ÊäÈëÁ÷
+        SAXReader reader = new SAXReader();            // // ä½¿ç”¨dom4jè§£æxml
+        InputStream ins = request.getInputStream(); // ä»requestä¸­è·å–è¾“å…¥æµ
         Document doc = reader.read(ins);
          
-        Element root = doc.getRootElement();         // »ñÈ¡¸ùÔªËØ
-        List<Element> list = root.elements();        // »ñÈ¡ËùÓĞ½Úµã
+        Element root = doc.getRootElement();         //è·å–æ ¹å…ƒç´ 
+        List<Element> list = root.elements();        // è·å–æ‰€æœ‰èŠ‚ç‚¹
          
         for (Element e : list) {
             map.put(e.getName(), e.getText()); 
@@ -45,27 +65,38 @@ public class MessageUtil {
     }
      
     /**
-     * ½«ÎÄ±¾ÏûÏ¢¶ÔÏó×ª»»³ÉXML
+     * å°†æ–‡æœ¬æ¶ˆæ¯å¯¹è±¡è½¬æ¢æˆXML
      */
     public static String textMessageToXML(TextMeaasge textMessage){
          
- //       XStream xstream = new XStream();              // Ê¹ÓÃXStream½«ÊµÌåÀàµÄÊµÀı×ª»»³Éxml¸ñÊ½    
-        xstream.alias("xml", textMessage.getClass()); // ½«xmlµÄÄ¬ÈÏ¸ù½ÚµãÌæ»»³É¡°xml¡±
+ //       XStream xstream = new XStream();              // ä½¿ç”¨XStreamå°†å®ä½“ç±»çš„å®ä¾‹è½¬æ¢æˆxmlæ ¼å¼    
+        xstream.alias("xml", textMessage.getClass()); // å°†xmlçš„é»˜è®¤æ ¹èŠ‚ç‚¹æ›¿æ¢æˆâ€œxmlâ€
         return xstream.toXML(textMessage);
          
     }
     
-    
+    /**
+     * å¯¹XStreamåšä¸€äº›æ‰©å±•ï¼Œä½¿å…¶æ”¯æŒCDATAï¼Œæ•°å­—å’Œæµ®ç‚¹æ•°ä¸åŠ CDATAï¼Œxmlå±æ€§é¦–å­—æ¯å¤§å†™
+     */
     private static XStream xstream = new XStream(new XppDriver() {
         public HierarchicalStreamWriter createWriter(Writer out) {
             return new PrettyPrintWriter(out) {
-                // ¶ÔËùÓĞxml½ÚµãµÄ×ª»»¶¼Ôö¼ÓCDATA±ê¼Ç
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xmlï¿½Úµï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CDATAï¿½ï¿½ï¿½
                 boolean cdata = true;
 
                 //@SuppressWarnings("unchecked")
                 public void startNode(String name, Class clazz) {
+                	if(!name.equals("xml")){
+                		char[] arr = name.toCharArray();
+                		if(arr[0] >= 'a' && arr[1] <= 'z'){
+                			//ASCIIç ï¼Œå¤§å†™å­—æ¯å’Œå°å†™å­—ç¬¦ä¹‹é—´æ•°å€¼ä¸Šå·®32
+                			arr[0] = (char) ((int)arr[0] -32);
+                		}
+                		name = new String(arr);
+                	}
                     super.startNode(name, clazz);
                 }
+                
 
                 protected void writeText(QuickWriter writer, String text) {
                     if (cdata) {
@@ -81,9 +112,9 @@ public class MessageUtil {
     });
      
 /*    *//**
-     * Í¼Æ¬ÏûÏ¢¶ÔÏó×ª»»³Éxml
+     * Í¼Æ¬ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xml
      * 
-     * @param imageMessage Í¼Æ¬ÏûÏ¢¶ÔÏó
+     * @param imageMessage Í¼Æ¬ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
      * @return xml
      *//*
     public static String messageToXML(ImageMessage imageMessage) {
@@ -92,9 +123,9 @@ public class MessageUtil {
     }
 
     *//**
-     * ÓïÒôÏûÏ¢¶ÔÏó×ª»»³Éxml
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xml
      * 
-     * @param voiceMessage ÓïÒôÏûÏ¢¶ÔÏó
+     * @param voiceMessage ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
      * @return xml
      *//*
     public static String messageToXML(VoiceMessage voiceMessage) {
@@ -103,9 +134,9 @@ public class MessageUtil {
     }
 
     *//**
-     * ÊÓÆµÏûÏ¢¶ÔÏó×ª»»³Éxml
+     * ï¿½ï¿½Æµï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xml
      * 
-     * @param videoMessage ÊÓÆµÏûÏ¢¶ÔÏó
+     * @param videoMessage ï¿½ï¿½Æµï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
      * @return xml
      *//*
     public static String messageToXML(VideoMessage videoMessage) {

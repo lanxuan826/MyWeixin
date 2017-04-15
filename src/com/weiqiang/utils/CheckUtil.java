@@ -5,8 +5,9 @@ import java.util.Arrays;
 import org.apache.commons.codec.digest.DigestUtils;
  
 /**
- * Ğ£ÑéµÄ¹¤¾ßÀà
+ * * æ ¡éªŒçš„å·¥å…·ç±»
  */
+
 public class CheckUtil {
  
     private static final String token = "weixin";
@@ -14,21 +15,21 @@ public class CheckUtil {
          
         String[] arr = new String[] { token, timestamp, nonce };
          
-        // ÅÅĞò
+        //// æ’åº
         Arrays.sort(arr);
-        // Éú³É×Ö·û´®
+        // ç”Ÿæˆå­—ç¬¦ä¸²
         StringBuilder content = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
             content.append(arr[i]);
         }
          
-        // sha1¼ÓÃÜ
+        // sha1åŠ å¯†
         String temp = getSHA1String(content.toString());
          
-        return temp.equals(signature); // ÓëÎ¢ĞÅ´«µİ¹ıÀ´µÄÇ©Ãû½øĞĞ±È½Ï
+        return temp.equals(signature); // ä¸å¾®ä¿¡ä¼ é€’è¿‡æ¥çš„ç­¾åè¿›è¡Œæ¯”è¾ƒ
     }
      
     private static String getSHA1String(String data){
-        return DigestUtils.sha1Hex(data);    // Ê¹ÓÃcommons codecÉú³Ésha1×Ö·û´®
+        return DigestUtils.sha1Hex(data);    //// ä½¿ç”¨commons codecç”Ÿæˆsha1å­—ç¬¦ä¸²
     }
 }

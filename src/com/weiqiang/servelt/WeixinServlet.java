@@ -23,17 +23,17 @@ import com.weiqiang.utils.MessageUtil;
 import com.weiqiang.vo.TextMeaasge;
  
 /**
- * Î¢ĞÅÏûÏ¢µÄ½ÓÊÕºÍÏìÓ¦
+ *å¾®ä¿¡æ¶ˆæ¯çš„æ¥æ”¶å’Œå“åº”
  */
 public class WeixinServlet extends HttpServlet {
  
     /**
-     * ½ÓÊÕÎ¢ĞÅ·şÎñÆ÷·¢ËÍµÄ4¸ö²ÎÊı²¢·µ»Øechostr
+     * æ¥æ”¶å¾®ä¿¡æœåŠ¡å™¨å‘é€çš„4ä¸ªå‚æ•°å¹¶è¿”å›echostr
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
  
-        // ½ÓÊÕÎ¢ĞÅ·şÎñÆ÷ÒÔGetÇëÇó·¢ËÍµÄ4¸ö²ÎÊı
+        // ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Getï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
@@ -41,12 +41,12 @@ public class WeixinServlet extends HttpServlet {
          
         PrintWriter out = response.getWriter();
         if (CheckUtil.checkSignature(signature, timestamp, nonce)) {
-            out.print(echostr);        // Ğ£ÑéÍ¨¹ı£¬Ô­Ñù·µ»Øechostr²ÎÊıÄÚÈİ
+            out.print(echostr);       // æ ¡éªŒé€šè¿‡ï¼ŒåŸæ ·è¿”å›echostrå‚æ•°å†…å®¹
         }
     }
  
     /**
-     * ½ÓÊÕ²¢´¦ÀíÎ¢ĞÅ¿Í»§¶Ë·¢ËÍµÄÇëÇó
+     *  æ¥æ”¶å¹¶å¤„ç†å¾®ä¿¡å®¢æˆ·ç«¯å‘é€çš„è¯·æ±‚
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,17 +62,22 @@ public class WeixinServlet extends HttpServlet {
             String content = map.get("Content");
              
             String message = null;
-            if ("text".equals(msgType)) {                // ¶ÔÎÄ±¾ÏûÏ¢½øĞĞ´¦Àí
+            if ("text".equals(msgType)) {              // å¯¹æ–‡æœ¬æ¶ˆæ¯è¿›è¡Œå¤„ç†
                 TextMeaasge text = new TextMeaasge();
-                text.setFromUserName(toUserName);         // ·¢ËÍºÍ»Ø¸´ÊÇ·´ÏòµÄ
+                text.setFromUserName(toUserName);        // å‘é€å’Œå›å¤æ˜¯åå‘çš„
                 text.setToUserName(fromUserName);
                 text.setMsgType("text");
                 text.setCreateTime(new Date().getTime());
-                text.setContent("Äã·¢ËÍµÄÏûÏ¢ÊÇ£º" + content);
-                message = MessageUtil.textMessageToXML(text);
+                text.setContent("ä½ å‘é€çš„ä¿¡æ¯ï¼š" + content);
+               message = MessageUtil.textMessageToXML(text);
+             /*   message = "<xml><FromUserName><![CDATA[gh_471560a51423]]></FromUserName>"
+                		+ "<ToUserName><![CDATA[oYgZkwVtIDAdsGiSTjLgbbuEhMOM]]></ToUserName>"
+                		+ "<MsgType><![CDATA[text]]></MsgType><CreateTime><![CDATA[1492224299647]]>"
+                		+ "</CreateTime><Content><![CDATA[æˆ‘å‘é€çš„ï¼šæ‚¨å¥½ï¼]]></Content></xml>";
+                */
                 System.out.println(message);            
             }
-            out.print(message);                            // ½«»ØÓ¦·¢ËÍ¸øÎ¢ĞÅ·şÎñÆ÷
+            out.print(message);                          // å°†å›åº”å‘é€ç»™å¾®ä¿¡æœåŠ¡å™¨
         } catch (DocumentException e) {
             e.printStackTrace();
         }finally{
