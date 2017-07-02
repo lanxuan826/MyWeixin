@@ -44,7 +44,7 @@ import com.weiqiang.vo.TextMeaasge;
 public class MessageUtil {
  
     /**
-     * ��XMLת����Map����
+     * Map类型和XML的互转
      */
     public static Map<String, String>xmlToMap(HttpServletRequest request) throws IOException, DocumentException{
          
